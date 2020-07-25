@@ -2,11 +2,11 @@ import matplotlib.path as path
 import numpy as np
 
 
-def get_grid_cell_corner_latlon(i: int, j:int, lat: np.ndarray, lon: np.ndarray):
+def get_grid_cell_corner_latlon(i: int, j: int, lat: np.ndarray, lon: np.ndarray, extent: int=1):
     """Given i, j indices and lat and lon arrays, returns latitude 
     and longitude of 4 corners of the grid cell at (j, i)."""
-    jc = [j, j, j+1, j+1]
-    ic = [i, i+1, i+1, i]
+    jc = [j, j, j+extent, j+extent]
+    ic = [i, i+extent, i+extent, i]
     return lat[jc, ic], lon[jc, ic]
 
 
@@ -16,10 +16,10 @@ def get_grid_cell_polygon(xc: np.ndarray, yc: np.ndarray) -> path.Path:
     return path.Path(np.vstack((xc, yc)).T)
 
 
-def get_nalcms_data_in_target_grid_cell(i0, j0, latc, lonc, projection, ds):
+def get_nalcms_data_in_target_grid_cell(i0, j0, latc, lonc, projection, ds, extent=1):
     """Returns (x, y) coordinates, data, and logical mask arrays
     of landuse on source grid that fit in a target grid cell (j0, i0)."""
-    corner_lat, corner_lon = get_grid_cell_corner_latlon(i0, j0, latc, lonc)
+    corner_lat, corner_lon = get_grid_cell_corner_latlon(i0, j0, latc, lonc, extent=extent)
     xc, yc = projection(corner_lon, corner_lat)
     
     jmax, imin = ds.index(np.min(xc), np.min(yc))
