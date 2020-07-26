@@ -2,6 +2,30 @@ import matplotlib.path as path
 import numpy as np
 
 
+CLASSES = {
+    0: 'No data',
+    1: 'Temperate or sub-polar needleleaf forest',
+    2: 'Sub-polar taiga needleleaf forest',
+    3: 'Tropical or sub-tropical broadleaf evergreen forest',
+    4: 'Tropical or sub-tropical broadleaf deciduous forest',
+    5: 'Temperate or sub-polar broadleaf deciduous forest',
+    6: 'Mixed Forest',
+    7: 'Tropical or sub-tropical shrubland',
+    8: 'Temperate or sub-polar shrubland',
+    9: 'Tropical or sub-tropical grassland',
+    10: 'Temperate or sub-polar grassland ',
+    11: 'Sub-polar or polar shrubland-lichen-moss',
+    12: 'Sub-polar or polar grassland-lichen-moss',
+    13: 'Sub-polar or polar barren-lichen-moss',
+    14: 'Wetland',
+    15: 'Cropland',
+    16: 'Barren Lands',
+    17: 'Urban and Built-up',
+    18: 'Water',
+    19: 'Snow and Ice'
+}
+
+
 def get_grid_cell_corner_latlon(i: int, j: int, lat: np.ndarray, lon: np.ndarray, extent: int=1):
     """Given i, j indices and lat and lon arrays, returns latitude 
     and longitude of 4 corners of the grid cell at (j, i)."""
