@@ -34,6 +34,7 @@ def demo(nalcms, geo_em):
     plt.xlabel('Easting [m]')
     plt.ylabel('Northing [m]')
     plt.title('Step 1: Target grid cell in Cartesian space')
+    fig.subplots_adjust(left=0.0, top=0.95)
     plt.savefig('nalcms_demo_step1.png')
     plt.close(fig)
     
@@ -49,7 +50,8 @@ def demo(nalcms, geo_em):
     plt.plot(xcc, ycc, 'k-', alpha=0.5)
     plt.xlabel('Easting [m]')
     plt.ylabel('Northing [m]')
-    plt.title('Step 2: Bounds of target grid cell')
+    plt.title('Step 2: Find bounds of target grid cell')
+    fig.subplots_adjust(left=0.0, top=0.95)
     plt.savefig('nalcms_demo_step2.png')
     plt.close(fig)
    
@@ -63,6 +65,7 @@ def demo(nalcms, geo_em):
     plt.xlabel('Easting [m]')
     plt.ylabel('Northing [m]')
     plt.title('Step 3: Overlay source grid points')
+    fig.subplots_adjust(left=0.0, top=0.95)
     plt.savefig('nalcms_demo_step3.png')
     plt.close(fig)
     
@@ -78,7 +81,8 @@ def demo(nalcms, geo_em):
     plt.plot(xx[::10,::10], yy[::10,::10], 'k.', ms=1)
     plt.xlabel('Easting [m]')
     plt.ylabel('Northing [m]')
-    plt.title('Step 4: Identify points inside target grid cell')
+    plt.title('Step 4: Find source points inside target grid cell')
+    fig.subplots_adjust(left=0.0, top=0.95)
     plt.savefig('nalcms_demo_step4.png')
     plt.close(fig)
     
@@ -92,6 +96,7 @@ def demo(nalcms, geo_em):
     plt.xlabel('Easting [m]')
     plt.ylabel('Northing [m]')
     plt.title('Step 5: Read landuse data in target grid cell')
+    fig.subplots_adjust(left=0.0, top=0.95)
     plt.savefig('nalcms_demo_step5.png')
     plt.close(fig)
 
@@ -99,11 +104,12 @@ def demo(nalcms, geo_em):
 
     fig = plt.figure(figsize=(8, 6))
     ax = fig.add_subplot(111)
-    plt.bar(CLASSES.keys(), dist)
+    plt.bar(CLASSES.keys(), dist / np.sum(dist))
     plt.xticks(list(CLASSES.keys()), rotation=90)
     ax.set_xticklabels(list(CLASSES.values()))
+    plt.ylabel('Fraction')
     plt.title('Step 6: Distribution of landuse categories in target grid cell')
-    fig.subplots_adjust(bottom=0.6)
+    fig.subplots_adjust(bottom=0.6, top=0.95)
     plt.savefig('nalcms_demo_step6.png')
     plt.close(fig)
 
