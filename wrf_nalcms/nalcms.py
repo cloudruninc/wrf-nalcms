@@ -1,28 +1,28 @@
 import matplotlib.path as path
 import numpy as np
 
-
-CLASSES = {
-    0: 'No data',
-    1: 'Temperate or sub-polar needleleaf forest',
-    2: 'Sub-polar taiga needleleaf forest',
-    3: 'Tropical or sub-tropical broadleaf evergreen forest',
-    4: 'Tropical or sub-tropical broadleaf deciduous forest',
-    5: 'Temperate or sub-polar broadleaf deciduous forest',
-    6: 'Mixed Forest',
-    7: 'Tropical or sub-tropical shrubland',
-    8: 'Temperate or sub-polar shrubland',
-    9: 'Tropical or sub-tropical grassland',
-    10: 'Temperate or sub-polar grassland ',
-    11: 'Sub-polar or polar shrubland-lichen-moss',
-    12: 'Sub-polar or polar grassland-lichen-moss',
-    13: 'Sub-polar or polar barren-lichen-moss',
-    14: 'Wetland',
-    15: 'Cropland',
-    16: 'Barren Lands',
-    17: 'Urban and Built-up',
-    18: 'Water',
-    19: 'Snow and Ice'
+# use: NALCMS_CLASSES[8]['wrf_class']
+NALCMS_CLASSES = {
+    0: {'name': 'No data', 'wrf_class': None},
+    1: {'name': 'Temperate or sub-polar needleleaf forest', 'wrf_class': 18},
+    2: {'name': 'Sub-polar taiga needleleaf forest', 'wrf_class': 1},
+    3: {'name': 'Tropical or sub-tropical broadleaf evergreen forest', 'wrf_class': 2},
+    4: {'name': 'Tropical or sub-tropical broadleaf deciduous forest', 'wrf_class': 4},
+    5: {'name': 'Temperate or sub-polar broadleaf deciduous forest', 'wrf_class': 4},
+    6: {'name': 'Mixed Forest', 'wrf_class': 5},
+    7: {'name': 'Tropical or sub-tropical shrubland', 'wrf_class': 7},
+    8: {'name': 'Temperate or sub-polar shrubland', 'wrf_class': 7},
+    9: {'name': 'Tropical or sub-tropical grassland', 'wrf_class': 9},
+    10: {'name': 'Temperate or sub-polar grassland ', 'wrf_class': 10},
+    11: {'name': 'Sub-polar or polar shrubland-lichen-moss', 'wrf_class': 19},
+    12: {'name': 'Sub-polar or polar grassland-lichen-moss', 'wrf_class': 19},
+    13: {'name': 'Sub-polar or polar barren-lichen-moss', 'wrf_class': 20},
+    14: {'name': 'Wetland', 'wrf_class': 11},
+    15: {'name': 'Cropland', 'wrf_class': 12},
+    16: {'name': 'Barren Lands', 'wrf_class': 16},
+    17: {'name': 'Urban and Built-up', 'wrf_class': 13},
+    18: {'name': 'Water', 'wrf_class': 17},
+    19: {'name': 'Snow and Ice', 'wrf_class': 15}
 }
 
 
