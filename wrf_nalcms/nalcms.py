@@ -62,3 +62,21 @@ def get_nalcms_data_in_target_grid_cell(i0, j0, latc, lonc, projection, ds, exte
     data = ds.read(window=((jmin, jmax + 1), (imin, imax + 1)))[0,:,:]
     
     return xx, yy, data, mask, xc, yc
+
+
+def process_nalcms_to_geo_em(nalcms, geo_em):
+    
+    # get the projection from the NALCMS dataset
+    projection = Proj(nalcms.crs)
+
+    lon = np.array(geo_em.XLONG_M[0,:,:])
+    lat = np.array(geo_em.XLAT_M[0,:,:])
+    latc = np.array(geo_em.XLAT_V[0,:,:])
+    lonc = np.array(geo_em.XLONG_U[0,:,:])
+
+    jm, im = lon.shape
+
+    #for i in range(im):
+    #    for j in range(jm):
+            #xx, yy, data, mask, xc, yc = get_nalcms_data_in_target_grid_cell(i0, j0, latc, lonc, \
+                                                                             projection, nalcms, extent=extent)

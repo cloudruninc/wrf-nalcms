@@ -1,7 +1,7 @@
 import numpy as np
 from pyproj import Proj
 import rasterio
-from wrf_nalcms.nalcms import CLASSES, get_nalcms_data_in_target_grid_cell
+from wrf_nalcms.nalcms import NALCMS_CLASSES, get_nalcms_data_in_target_grid_cell
 import xarray
 import matplotlib.pyplot as plt
 
@@ -100,13 +100,13 @@ def demo(nalcms, geo_em):
     plt.savefig('nalcms_demo_step5.png')
     plt.close(fig)
 
-    dist = np.bincount(data[mask], minlength=len(CLASSES.keys()))
+    dist = np.bincount(data[mask], minlength=len(NALCMS_CLASSES.keys()))
 
     fig = plt.figure(figsize=(8, 6))
     ax = fig.add_subplot(111)
-    plt.bar(CLASSES.keys(), dist / np.sum(dist))
-    plt.xticks(list(CLASSES.keys()), rotation=90)
-    ax.set_xticklabels(list(CLASSES.values()))
+    plt.bar(NALCMS_CLASSES.keys(), dist / np.sum(dist))
+    plt.xticks(list(NALCMS_CLASSES.keys()), rotation=90)
+    ax.set_xticklabels(list(NALCMS_CLASSES.values()))
     plt.ylabel('Fraction')
     plt.title('Step 6: Distribution of landuse categories in target grid cell')
     fig.subplots_adjust(bottom=0.6, top=0.95)
