@@ -65,10 +65,6 @@ def get_nalcms_data_in_target_grid_cell(i0, j0, latc, lonc, projection, ds, exte
     return xx, yy, data, mask, xc, yc
 
 
-def get_landuse_fraction(data):
-    pass
-
-
 def get_urban_multi_classes(data):
     pass
 
@@ -89,14 +85,29 @@ def process_nalcms_to_geo_em(nalcms, geo_em):
 
     jm, im = lon.shape
 
+    geo_em.LANDUSEF[:] = 0
+
     for j in range(jm-1):
         print(j, '/', jm)
         for i in range(im-1):
             xx, yy, data, mask, xc, yc = \
                 get_nalcms_data_in_target_grid_cell(i, j, latc, lonc, projection, nalcms)
+
+            # skip if we are out of bounds of source data
+            if not data.shape == mask.shape:
+                continue
+
+            # skip if point is found but no landcover data
+            if np.all(data == 0):
+                continue
+
             bincount = np.bincount(data[mask])
             fractions = bincount / np.sum(bincount)
-            #print(NALCMS_CLASSES[np.argmax(fractions)]['name'])
+            for n in range(1, fractions.size):
+                geo_em.LANDUSEF[0,NALCMS_CLASSES[n]['wrf_class']-1,j,i] = fractions[n]
             geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[np.argmax(fractions)]['wrf_class']
+            geo_em.FRC_URB2D[0,j,i] = 0
+            if fractions.size > 17:
+                geo_em.FRC_URB2D[0,j,i] = fractions[17]
 
-    geo_em.to_netcdf('geo_em.d03.new.nc')
+    geo_em.to_netcdf('geo_em.d01.new.nc') # TODO generalize this
