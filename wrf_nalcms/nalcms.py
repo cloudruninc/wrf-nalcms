@@ -1,5 +1,6 @@
 import matplotlib.path as path
 import numpy as np
+from pyproj import Proj
 
 # use: NALCMS_CLASSES[8]['wrf_class']
 NALCMS_CLASSES = {
@@ -64,6 +65,18 @@ def get_nalcms_data_in_target_grid_cell(i0, j0, latc, lonc, projection, ds, exte
     return xx, yy, data, mask, xc, yc
 
 
+def get_landuse_fraction(data):
+    pass
+
+
+def get_urban_multi_classes(data):
+    pass
+
+
+def get_urban_fraction(data):
+    pass
+
+
 def process_nalcms_to_geo_em(nalcms, geo_em):
     
     # get the projection from the NALCMS dataset
@@ -76,7 +89,14 @@ def process_nalcms_to_geo_em(nalcms, geo_em):
 
     jm, im = lon.shape
 
-    #for i in range(im):
-    #    for j in range(jm):
-            #xx, yy, data, mask, xc, yc = get_nalcms_data_in_target_grid_cell(i0, j0, latc, lonc, \
-                                                                             projection, nalcms, extent=extent)
+    for j in range(jm-1):
+        print(j, '/', jm)
+        for i in range(im-1):
+            xx, yy, data, mask, xc, yc = \
+                get_nalcms_data_in_target_grid_cell(i, j, latc, lonc, projection, nalcms)
+            bincount = np.bincount(data[mask])
+            fractions = bincount / np.sum(bincount)
+            #print(NALCMS_CLASSES[np.argmax(fractions)]['name'])
+            geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[np.argmax(fractions)]['wrf_class']
+
+    geo_em.to_netcdf('geo_em.d03.new.nc')
