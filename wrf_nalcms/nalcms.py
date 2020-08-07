@@ -73,7 +73,7 @@ def get_urban_fraction(data):
     pass
 
 
-def process_nalcms_to_geo_em(nalcms, geo_em):
+def process_nalcms_to_geo_em_all(nalcms, geo_em, urban_multi=True):
     
     # get the projection from the NALCMS dataset
     projection = Proj(nalcms.crs)
@@ -86,9 +86,10 @@ def process_nalcms_to_geo_em(nalcms, geo_em):
     jm, im = lon.shape
 
     geo_em.LANDUSEF[:] = 0
+    geo_em.FRC_URB2D[:] = 0
 
     for j in range(jm-1):
-        print(j, '/', jm)
+        print('Processing row', j, '/', jm)
         for i in range(im-1):
             xx, yy, data, mask, xc, yc = \
                 get_nalcms_data_in_target_grid_cell(i, j, latc, lonc, projection, nalcms)
@@ -103,16 +104,85 @@ def process_nalcms_to_geo_em(nalcms, geo_em):
 
             bincount = np.bincount(data[mask])
             fractions = bincount / np.sum(bincount)
+            dominant_class = np.argmax(fractions) 
 
             # skip if dominant bin is "no data"
-            if np.argmax(fractions) == 0:
+            if dominant_class == 0:
                 continue
 
+            # set fraction for each landuse index
             for n in range(1, fractions.size):
                 geo_em.LANDUSEF[0,NALCMS_CLASSES[n]['wrf_class']-1,j,i] = fractions[n]
-            geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[np.argmax(fractions)]['wrf_class']
-            geo_em.FRC_URB2D[0,j,i] = 0
+            
+            # set landuse index
+            geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[dominant_class]['wrf_class']
+           
+            # set urban fraction and multi-classes
+            if fractions.size > 17:
+                geo_em.FRC_URB2D[0,j,i] = fractions[17]
+                
+                if urban_multi and dominant_class == 17:
+                    if fractions[dominant_class] >= 0.83:
+                        geo_em.LU_INDEX[0,j,i] = 32
+                    elif fractions[dominant_class] >= 0.55:
+                        geo_em.LU_INDEX[0,j,i] = 31
+                    else:
+                        geo_em.LU_INDEX[0,j,i] = 30
+
+    geo_em.to_netcdf('geo_em.d%2.2i.new.nc' % geo_em.grid_id)
+
+
+
+def process_nalcms_to_geo_em_urban(nalcms, geo_em, urban_multi=True):
+    
+    # get the projection from the NALCMS dataset
+    projection = Proj(nalcms.crs)
+
+    lon = np.array(geo_em.XLONG_M[0,:,:])
+    lat = np.array(geo_em.XLAT_M[0,:,:])
+    latc = np.array(geo_em.XLAT_V[0,:,:])
+    lonc = np.array(geo_em.XLONG_U[0,:,:])
+
+    jm, im = lon.shape
+
+    # initialize urban fraction
+    geo_em.FRC_URB2D[:] = 0
+            
+    for j in range(jm-1):
+        print('Processing row', j, '/', jm)
+        for i in range(im-1):
+            xx, yy, data, mask, xc, yc = \
+                get_nalcms_data_in_target_grid_cell(i, j, latc, lonc, projection, nalcms)
+
+            # skip if we are out of bounds of source data
+            if not data.shape == mask.shape:
+                continue
+
+            # skip if point is found but no landcover data
+            if np.all(data == 0):
+                continue
+
+            bincount = np.bincount(data[mask])
+            fractions = bincount / np.sum(bincount)
+            dominant_class = np.argmax(fractions) 
+                
+            # set urban fraction
             if fractions.size > 17:
                 geo_em.FRC_URB2D[0,j,i] = fractions[17]
 
+            # set landuse index
+            if dominant_class == 17:
+                if urban_multi:
+                    if fractions[dominant_class] >= 0.83:
+                        geo_em.LU_INDEX[0,j,i] = 32
+                    elif fractions[dominant_class] >= 0.55:
+                        geo_em.LU_INDEX[0,j,i] = 31
+                    else:
+                        geo_em.LU_INDEX[0,j,i] = 30
+                else:
+                    geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[dominant_class]['wrf_class']
+
+    # set landuse fraction for urban class only; leave others alone
+    geo_em.LANDUSEF[0,NALCMS_CLASSES[17]['wrf_class']-1,:,:] = geo_em.FRC_URB2D[0,:,:]
+            
     geo_em.to_netcdf('geo_em.d%2.2i.new.nc' % geo_em.grid_id)

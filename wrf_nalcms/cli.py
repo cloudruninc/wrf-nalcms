@@ -1,31 +1,37 @@
 import argparse
 import rasterio
 from wrf_nalcms.demo import demo
-from wrf_nalcms.nalcms import process_nalcms_to_geo_em
+from wrf_nalcms.nalcms import process_nalcms_to_geo_em_all, process_nalcms_to_geo_em_urban
 import xarray
 
 
 def cli():
 
     parser = argparse.ArgumentParser(description='nalcms - Process NALCMS land use data for ingestion into WRF')
-    parser.add_argument('nalcms_path', type=str, \
+    parser.add_argument('nalcms_path', type=str,
                         help='Path to the NALCMS source TIFF file')
-    parser.add_argument('geo_em_path', type=str, \
+    parser.add_argument('geo_em_path', type=str,
                         help='Path to the geo_em target NetCDF file')
-    parser.add_argument('-d', '--demo', action='store_true', \
+    parser.add_argument('-d', '--demo', action='store_true',
                         help='NALCMS sampling algorithm demo')
-    parser.add_argument('-c', '--classes', type=str, default='all', \
-                        help='Which classes to process (all, urban-single, urban-multi)')
+    parser.add_argument('-c', '--classes', type=str, default='all',
+                        choices=['all', 'urban'],
+                        help='Which classes to process')
+    parser.add_argument('-u', '--urban', type=str, default='multi',
+                        choices=['single', 'multi'],
+                        help='Whether to use single or multiple (3) urban classes')
     args = parser.parse_args()
-
-    if args.classes not in ['all', 'urban-single', 'urban-multi']:
-        raise ValueError('value of --classes must be "all", "urban-single", or "urban-multi"')
 
     nalcms = rasterio.open(args.nalcms_path)
     geo_em = xarray.open_dataset(args.geo_em_path)
 
     if args.demo:
         demo(nalcms, geo_em)
-        quit()
+        return
 
-    process_nalcms_to_geo_em(nalcms, geo_em)
+    urban_multi = True if args.urban == 'multi' else False
+
+    if args.classes == 'all':
+        process_nalcms_to_geo_em_all(nalcms, geo_em, urban_multi)
+    elif args.classes == 'urban':
+        process_nalcms_to_geo_em_urban(nalcms, geo_em, urban_multi)
