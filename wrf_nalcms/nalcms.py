@@ -103,6 +103,11 @@ def process_nalcms_to_geo_em(nalcms, geo_em):
 
             bincount = np.bincount(data[mask])
             fractions = bincount / np.sum(bincount)
+
+            # skip if dominant bin is "no data"
+            if np.argmax(fractions) == 0:
+                continue
+
             for n in range(1, fractions.size):
                 geo_em.LANDUSEF[0,NALCMS_CLASSES[n]['wrf_class']-1,j,i] = fractions[n]
             geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[np.argmax(fractions)]['wrf_class']
@@ -110,4 +115,4 @@ def process_nalcms_to_geo_em(nalcms, geo_em):
             if fractions.size > 17:
                 geo_em.FRC_URB2D[0,j,i] = fractions[17]
 
-    geo_em.to_netcdf('geo_em.d01.new.nc') # TODO generalize this
+    geo_em.to_netcdf('geo_em.d%2.2i.new.nc' % geo_em.grid_id)
