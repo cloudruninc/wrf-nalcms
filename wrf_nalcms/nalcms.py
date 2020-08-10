@@ -65,14 +65,6 @@ def get_nalcms_data_in_target_grid_cell(i0, j0, latc, lonc, projection, ds, exte
     return xx, yy, data, mask, xc, yc
 
 
-def get_urban_multi_classes(data):
-    pass
-
-
-def get_urban_fraction(data):
-    pass
-
-
 def process_nalcms_to_geo_em_all(nalcms, geo_em, urban_multi=True):
     
     # get the projection from the NALCMS dataset
@@ -174,11 +166,11 @@ def process_nalcms_to_geo_em_urban(nalcms, geo_em, urban_multi=True):
             if dominant_class == 17:
                 if urban_multi:
                     if fractions[dominant_class] >= 0.83:
-                        geo_em.LU_INDEX[0,j,i] = 32
+                        geo_em.LU_INDEX[0,j,i] = 33
                     elif fractions[dominant_class] >= 0.55:
-                        geo_em.LU_INDEX[0,j,i] = 31
+                        geo_em.LU_INDEX[0,j,i] = 32
                     else:
-                        geo_em.LU_INDEX[0,j,i] = 30
+                        geo_em.LU_INDEX[0,j,i] = 31
                 else:
                     geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[dominant_class]['wrf_class']
 
