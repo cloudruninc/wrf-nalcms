@@ -1,5 +1,9 @@
 # wrf-nalcms
 
+<center>
+![Urban fraction](img/frc_urb2d.png)
+</center>
+
 Process NALCMS land use data for ingestion into WRF.
 For conversion of source land use classes (including urban),
 MODIFIED_IGBP_MODIS_NOAH land use table in WRF is assumed.
@@ -83,7 +87,7 @@ nalcms --demo NA_NALCMS_2010_v2_LC_30m_LAEA_mmu5pix_.tif geo_em.d01.nc
 
 This will output a set of images describing the sampling procedure, for example:
 
-![NALCMS demo](nalcms_demo.png)
+![NALCMS demo](img/nalcms_demo.png)
 
 ## Need help?
 
