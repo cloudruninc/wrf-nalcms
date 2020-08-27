@@ -106,7 +106,7 @@ def demo(nalcms, geo_em):
     ax = fig.add_subplot(111)
     plt.bar(NALCMS_CLASSES.keys(), dist / np.sum(dist))
     plt.xticks(list(NALCMS_CLASSES.keys()), rotation=90)
-    ax.set_xticklabels(list(NALCMS_CLASSES.values()))
+    ax.set_xticklabels([v['name'] for v in NALCMS_CLASSES.values()])
     plt.ylabel('Fraction')
     plt.title('Step 6: Distribution of landuse categories in target grid cell')
     fig.subplots_adjust(bottom=0.6, top=0.95)

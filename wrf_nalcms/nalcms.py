@@ -65,7 +65,7 @@ def get_nalcms_data_in_target_grid_cell(i0, j0, latc, lonc, projection, ds, exte
     return xx, yy, data, mask, xc, yc
 
 
-def process_nalcms_to_geo_em_all(nalcms, geo_em, urban_multi=True):
+def process_nalcms_to_geo_em_all(nalcms, geo_em, urban_multi, urban_multi_classes):
     
     # get the projection from the NALCMS dataset
     projection = Proj(nalcms.crs)
@@ -114,11 +114,11 @@ def process_nalcms_to_geo_em_all(nalcms, geo_em, urban_multi=True):
                 geo_em.FRC_URB2D[0,j,i] = fractions[17]
                 
                 if urban_multi and dominant_class == 17:
-                    if fractions[dominant_class] >= 0.95:
+                    if fractions[dominant_class] >= urban_multi_classes[2]:
                         geo_em.LU_INDEX[0,j,i] = 33
-                    elif fractions[dominant_class] >= 0.9:
+                    elif fractions[dominant_class] >= urban_multi_classes[1]:
                         geo_em.LU_INDEX[0,j,i] = 32
-                    elif fractions[dominant_class] >= 0.6:
+                    elif fractions[dominant_class] >= urban_multi_classes[0]:
                         geo_em.LU_INDEX[0,j,i] = 31
                     else:
                         geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[dominant_class]['wrf_class']
@@ -127,7 +127,7 @@ def process_nalcms_to_geo_em_all(nalcms, geo_em, urban_multi=True):
 
 
 
-def process_nalcms_to_geo_em_urban(nalcms, geo_em, urban_multi=True):
+def process_nalcms_to_geo_em_urban(nalcms, geo_em, urban_multi, urban_multi_classes):
     
     # get the projection from the NALCMS dataset
     projection = Proj(nalcms.crs)
@@ -167,11 +167,11 @@ def process_nalcms_to_geo_em_urban(nalcms, geo_em, urban_multi=True):
             # set landuse index
             if dominant_class == 17:
                 if urban_multi:
-                    if fractions[dominant_class] >= 0.95:
+                    if fractions[dominant_class] >= urban_multiclasses[2]:
                         geo_em.LU_INDEX[0,j,i] = 33
-                    elif fractions[dominant_class] >= 0.9:
+                    elif fractions[dominant_class] >= urban_multiclasses[1]:
                         geo_em.LU_INDEX[0,j,i] = 32
-                    elif fractions[dominant_class] >= 0.6:
+                    elif fractions[dominant_class] >= urban_multiclasses[0]:
                         geo_em.LU_INDEX[0,j,i] = 31
                     else:
                         geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[dominant_class]['wrf_class']
