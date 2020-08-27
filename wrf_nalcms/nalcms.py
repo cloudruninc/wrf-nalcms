@@ -2,7 +2,7 @@ import matplotlib.path as path
 import numpy as np
 from pyproj import Proj
 
-# use: NALCMS_CLASSES[8]['wrf_class']
+
 NALCMS_CLASSES = {
     0: {'name': 'No data', 'wrf_class': None},
     1: {'name': 'Temperate or sub-polar needleleaf forest', 'wrf_class': 18},
@@ -114,12 +114,14 @@ def process_nalcms_to_geo_em_all(nalcms, geo_em, urban_multi=True):
                 geo_em.FRC_URB2D[0,j,i] = fractions[17]
                 
                 if urban_multi and dominant_class == 17:
-                    if fractions[dominant_class] >= 0.83:
+                    if fractions[dominant_class] >= 0.95:
+                        geo_em.LU_INDEX[0,j,i] = 33
+                    elif fractions[dominant_class] >= 0.9:
                         geo_em.LU_INDEX[0,j,i] = 32
-                    elif fractions[dominant_class] >= 0.55:
+                    elif fractions[dominant_class] >= 0.6:
                         geo_em.LU_INDEX[0,j,i] = 31
                     else:
-                        geo_em.LU_INDEX[0,j,i] = 30
+                        geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[dominant_class]['wrf_class']
 
     geo_em.to_netcdf('geo_em.d%2.2i.new.nc' % geo_em.grid_id)
 
@@ -165,12 +167,14 @@ def process_nalcms_to_geo_em_urban(nalcms, geo_em, urban_multi=True):
             # set landuse index
             if dominant_class == 17:
                 if urban_multi:
-                    if fractions[dominant_class] >= 0.83:
+                    if fractions[dominant_class] >= 0.95:
                         geo_em.LU_INDEX[0,j,i] = 33
-                    elif fractions[dominant_class] >= 0.55:
+                    elif fractions[dominant_class] >= 0.9:
                         geo_em.LU_INDEX[0,j,i] = 32
-                    else:
+                    elif fractions[dominant_class] >= 0.6:
                         geo_em.LU_INDEX[0,j,i] = 31
+                    else:
+                        geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[dominant_class]['wrf_class']
                 else:
                     geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[dominant_class]['wrf_class']
 
