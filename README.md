@@ -1,6 +1,8 @@
 # wrf-nalcms
 
 Process NALCMS land use data for ingestion into WRF.
+For conversion of source land use classes (including urban),
+MODIFIED_IGBP_MODIS_NOAH land use table in WRF is assumed.
 
 ## Getting started
 
