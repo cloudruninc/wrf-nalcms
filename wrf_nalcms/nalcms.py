@@ -167,11 +167,11 @@ def process_nalcms_to_geo_em_urban(nalcms, geo_em, urban_multi, urban_multi_clas
             # set landuse index
             if dominant_class == 17:
                 if urban_multi:
-                    if fractions[dominant_class] >= urban_multiclasses[2]:
+                    if fractions[dominant_class] >= urban_multi_classes[2]:
                         geo_em.LU_INDEX[0,j,i] = 33
-                    elif fractions[dominant_class] >= urban_multiclasses[1]:
+                    elif fractions[dominant_class] >= urban_multi_classes[1]:
                         geo_em.LU_INDEX[0,j,i] = 32
-                    elif fractions[dominant_class] >= urban_multiclasses[0]:
+                    elif fractions[dominant_class] >= urban_multi_classes[0]:
                         geo_em.LU_INDEX[0,j,i] = 31
                     else:
                         geo_em.LU_INDEX[0,j,i] = NALCMS_CLASSES[dominant_class]['wrf_class']

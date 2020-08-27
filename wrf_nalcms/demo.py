@@ -5,6 +5,8 @@ from wrf_nalcms.nalcms import NALCMS_CLASSES, get_nalcms_data_in_target_grid_cel
 import xarray
 import matplotlib.pyplot as plt
 
+plt.rcParams.update({'font.size': 14})
+
 
 def demo(nalcms, geo_em):
 

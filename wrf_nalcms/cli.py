@@ -14,9 +14,9 @@ def cli():
                         help='Path to the geo_em target NetCDF file')
     parser.add_argument('-d', '--demo', action='store_true',
                         help='NALCMS sampling algorithm demo')
-    parser.add_argument('-c', '--classes', type=str, default='all',
+    parser.add_argument('-c', '--classes', type=str, default='urban',
                         choices=['all', 'urban'],
-                        help='Which classes to process')
+                        help='Which classes to process (default urban)')
     parser.add_argument('-u', '--urban', type=str, default='multi',
                         choices=['single', 'multi'],
                         help='Whether to use single or multiple (3) urban classes (default single)')

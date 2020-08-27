@@ -67,6 +67,12 @@ Example use:
 nalcms NA_NALCMS_2010_v2_LC_30m_LAEA_mmu5pix_.tif geo_em.d01.nc
 ```
 
+`nalcms` will:
+
+1. Create a copy of your `geo_em` file;
+2. Update the following fields: `LU_INDEX`, `FRC_URB2D`, `LANDUSEF`;
+3. Ouput the new `geo_em` file with a `new.nc` suffix.
+
 ### Running the algorithm demo
 
 ```
