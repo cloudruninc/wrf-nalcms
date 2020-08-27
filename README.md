@@ -1,8 +1,6 @@
 # wrf-nalcms
 
-<center>
 ![Urban fraction](img/frc_urb2d.png)
-</center>
 
 Process NALCMS land use data for ingestion into WRF.
 For conversion of source land use classes (including urban),
