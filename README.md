@@ -90,3 +90,7 @@ This will output a set of images describing the sampling procedure, for example:
 ## Need help?
 
 Write to [help@cloudrun.co](mailto:help@cloudrun.co).
+
+## Acknowledgement
+
+Development of wrf-nalcms was supported by the [National Research Council of Canada](https://nrc.canada.ca/en).
