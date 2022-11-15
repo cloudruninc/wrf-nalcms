@@ -14,7 +14,7 @@ MODIFIED_IGBP_MODIS_NOAH land use table in WRF is assumed.
 python3 -m venv venv # create a fresh environment
 source venv/bin/activate # activate the environment
 pip install -U pip # update the package manager
-pip install -U https://github.com/cloudruninc/wrf-nalcms # install this package
+pip install -U git+https://github.com/cloudruninc/wrf-nalcms # install this package
 ```
 
 This will install the `nalcms` executable program to your path.
